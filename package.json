@@ -3,7 +3,9 @@
     "type": "module",
     "scripts": {
         "build": "vue-tsc && vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "lint": "eslint --fix \"resources/**/*.{js,vue}\"",
+        "test:lint": "eslint \"resources/**/*.{js,vue}\""
     },
     "devDependencies": {
         "@eslint/js": "^9.14.0",
