@@ -14,6 +14,7 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
+        "larastan/larastan": "^2.0",
         "laravel/breeze": "^2.2",
         "laravel/pail": "^1.1",
         "laravel/pint": "^1.13",
@@ -36,20 +37,28 @@
         }
     },
     "scripts": {
-        "post-autoload-dump": [
-            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+        "lint": [
+            "pint",
+            "npm run lint"
         ],
-        "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+        "test:lint": [
+            "pint --test",
+            "npm run test:lint"
         ],
-        "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        "test:types": [
+            "./vendor/bin/phpstan analyse --memory-limit=2G",
+            "npm run test:types"
         ],
-        "post-create-project-cmd": [
-            "@php artisan key:generate --ansi",
-            "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
-            "@php artisan migrate --graceful --ansi"
+        "test:type-coverage": "pest --type-coverage --min=100",
+        "test:unit": "pest --parallel --ci --coverage --min=70",
+        "test:browser": [
+            "php artisan dusk --bail"
+        ],
+        "test": [
+            "@test:lint",
+            "@test:types",
+            "@test:type-coverage",
+            "@test:unit"
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
